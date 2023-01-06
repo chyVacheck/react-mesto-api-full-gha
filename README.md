@@ -1,15 +1,22 @@
-[![Tests](https://github.com/yandex-praktikum/react-mesto-api-full-gha/actions/workflows/tests.yml/badge.svg)](https://github.com/yandex-praktikum/react-mesto-api-full-gha/actions/workflows/tests.yml)
 # react-mesto-api-full
-Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`. 
-  
+
+Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`.
+
 Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
 
-Адрес репозитория: https://github.com/...
+# MESTO
 
-## Ссылки на проект
+- IP 0.0.0.0
 
-IP-адрес x.x.x.x
+- [FRONTEND](https://.nomoredomains.club/)
 
-Frontend https://...
+- [BACKEND](https://api..nomoredomains.club/)
 
-Backend https://...
+- [GitHub](https://github.com/chyVacheck/react-mesto-api-full)
+
+## USED TECHOLOGY
+
+![https://img.shields.io/badge/-Node%20JS-success](https://img.shields.io/badge/-Node%20JS-success)
+![https://img.shields.io/badge/-React%20JS-blue](https://img.shields.io/badge/-React%20JS-blue)
+![https://img.shields.io/badge/-Express-important](https://img.shields.io/badge/-Express-important)
+![https://img.shields.io/badge/-Mongo%20DB-brightgreen](https://img.shields.io/badge/-Mongo%20DB-brightgreen)

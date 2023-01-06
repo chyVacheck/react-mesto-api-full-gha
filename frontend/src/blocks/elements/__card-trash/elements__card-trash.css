@@ -1,0 +1,13 @@
+.elements__card-trash {
+  width: 18px;
+  height: 19px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  border: 0;
+  padding: 0;
+  background-size: contain;
+  background-color: transparent; /*? делаем фон прозрачным */
+  background-image: url(./../../../images/cards/card-trash.svg);
+  align-self: flex-end;
+}

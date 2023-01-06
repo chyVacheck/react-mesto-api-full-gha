@@ -1,0 +1,36 @@
+.profile__nick-and-button {
+  margin: 0;
+  height: 48px;
+  display: flex;
+  box-sizing: border-box;
+  justify-content: space-between;
+  gap: 0 18px;
+}
+
+/*? 544 - 1152 */
+@media screen and (min-width: 544px) and (max-width: 1152px) {
+  .profile__nick-and-button {
+    height: 40.5px;
+    gap: 0 14px;
+    padding: 0 9.5px;
+  }
+}
+
+/*? 320 - 544 */
+@media screen and (min-width: 320px) and (max-width: 544px) {
+  .profile__nick-and-button {
+    height: 33px;
+    width: 100%;
+    max-width: 336px;
+    margin: 0 auto;
+    gap: 0 10px;
+    padding: 0;
+  }
+}
+
+/*? 320 - 1152 */
+@media screen and (min-width: 320px) and (max-width: 1152px) {
+  .profile__nick-and-button {
+    justify-content: center;
+  }
+}
