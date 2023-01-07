@@ -63,7 +63,7 @@ const DEFAULT_VALUES = {
   },
   ALLOWED_METHODS: 'GET,HEAD,POST,PATCH,DELETE',
   CORS_OPTIONS: {
-    origin: ['localhost:3000', 'http://mesto-front/', 'mesto-front', '0.0.0.0:3000', 'myMesto.nomoredomains.club', 'api.mymesto.nomoredomains.club'],
+    origin: ['localhost:3000', 'http://chyVacheck.mesto.students.nomoredomains.club', 'https://chyVacheck.mesto.students.nomoredomains.club'],
     optionsSuccessStatus: 200,
     credentials: true,
   },
