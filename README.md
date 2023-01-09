@@ -6,11 +6,11 @@
 
 # MESTO
 
-- IP 0.0.0.0
+- IP 51.250.23.38
 
-- [FRONTEND](https://.nomoredomains.club/)
+- [FRONTEND](https://chyvacheck.mesto.students.nomoredomains.club/)
 
-- [BACKEND](https://api..nomoredomains.club/)
+- [BACKEND](https://api.chyVacheck.students.nomoredomains.club)
 
 - [GitHub](https://github.com/chyVacheck/react-mesto-api-full)
 
