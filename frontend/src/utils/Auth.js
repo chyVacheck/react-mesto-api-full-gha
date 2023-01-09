@@ -1,5 +1,5 @@
 
-import { URLServerChecking as baseUrl } from "./Constants";
+import { baseUrl } from "./Constants";
 
 class Auth {
   constructor(setting) {
@@ -61,6 +61,7 @@ class Auth {
 export const auth = new Auth({
   baseUrl: baseUrl,
   headers: {
+    "origin": baseUrl,
     'Content-Type': 'application/json',
   },
 });

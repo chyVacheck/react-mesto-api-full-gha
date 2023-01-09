@@ -1,6 +1,5 @@
 
-import { URLServerData as baseUrl, tokenServerData as token } from "./Constants";
-import { consoleMessage } from "./Constants";
+import { baseUrl, consoleMessage } from "./Constants";
 
 class Api {
   constructor(setting) {
@@ -118,7 +117,7 @@ class Api {
 export const api = new Api({
   baseUrl: baseUrl,
   headers: {
-    authorization: token,
+    "origin": baseUrl,
     "Content-Type": "application/json",
   },
 });
