@@ -2,8 +2,6 @@
 import { URLServerData as baseUrl, tokenServerData as token } from "./Constants";
 import { consoleMessage } from "./Constants";
 
-const myCohort = 'cohort-50';
-
 class Api {
   constructor(setting) {
     this._adress = setting.baseUrl;
@@ -26,18 +24,18 @@ class Api {
 
   //? запрос чтобы получить данные о пользователе
   getUserInfo() {
-    return this._request(`${this._adress}/${myCohort}/users/me`, {
+    return this._request(`${this._adress}/users/me`, {
       method: "GET",
       headers: this._headers,
     },
-      consoleMessage.GET + ' данные о пользователе'
+      consoleMessage.GET + ' data of user'
     )
   }
 
   //? запрос чтобы изменить данные о пользователе
   //* (имя и описание)
   setUserInfo(user) {
-    return this._request(`${this._adress}/${myCohort}/users/me`, {
+    return this._request(`${this._adress}/users/me`, {
       method: "PATCH",
       headers: this._headers,
 
@@ -46,13 +44,13 @@ class Api {
         about: user.about
       })
     },
-      consoleMessage.PATCH + ' данные о пользователе'
+      consoleMessage.PATCH + ' data of user'
     )
   }
 
   //? запрос чтобы изменить аватар пользователя
   setUserAvatar(avatar) {
-    return this._request(`${this._adress}/${myCohort}/users/me/avatar`, {
+    return this._request(`${this._adress}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
 
@@ -60,23 +58,23 @@ class Api {
         avatar: avatar
       })
     },
-      consoleMessage.PATCH + ' аватар пользователя',
+      consoleMessage.PATCH + ' avatar user',
     )
   }
 
   //? запрос чтобы получить массив карточек
   getCardArray() {
-    return this._request(`${this._adress}/${myCohort}/cards`, {
+    return this._request(`${this._adress}/cards`, {
       method: "GET",
       headers: this._headers,
     },
-      consoleMessage.GET + ' массив карточек',
+      consoleMessage.GET + ' array cards',
     )
   }
 
   //? запрос чтобы добавить карточку
   addNewCard(card) {
-    return this._request(`${this._adress}/${myCohort}/cards`, {
+    return this._request(`${this._adress}/cards`, {
       method: "POST",
       headers: this._headers,
       body: JSON.stringify({
@@ -84,36 +82,34 @@ class Api {
         link: card.link
       })
     },
-      consoleMessage.POST + ' карточку',
+      consoleMessage.POST + ' card',
     )
   }
 
   //? запрос чтобы удалить карточку
   deleteCard(card) {
-    return this._request(`${this._adress}/${myCohort}/cards/${card._id}`, {
+    return this._request(`${this._adress}/cards/${card._id}`, {
       method: "DELETE",
       headers: this._headers,
     },
-      consoleMessage.DELETE + ' карточку',
+      consoleMessage.DELETE + ' card',
     )
   }
 
   //? запрос чтобы добавить/удалить лайк с карточки
   changeLike(card, userId) {
     let action = "PUT";
-    let message = 'добавить';
     card.likes.forEach((like) => {
       if ((like._id === userId) && (action === "PUT")) {
         action = "DELETE";
-        message = 'убрать';
       }
     })
 
-    return this._request(`${this._adress}/cohort-50/cards/${card._id}/likes`, {
+    return this._request(`${this._adress}/cards/${card._id}/likes`, {
       method: action,
       headers: this._headers,
     },
-      consoleMessage[`${action}`] + ' лайк'
+      consoleMessage[`${action}`] + ' like'
     )
   }
 }
