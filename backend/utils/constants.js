@@ -66,6 +66,8 @@ const DEFAULT_VALUES = {
   CORS_OPTIONS: {
     origin: [
       // 'http://localhost:3000',
+      'http://chyVacheck.mesto.students.nomoredomains.club',
+      'https://chyVacheck.mesto.students.nomoredomains.club',
       'http://chyvacheck.mesto.students.nomoredomains.club',
       'https://chyvacheck.mesto.students.nomoredomains.club',
     ],
