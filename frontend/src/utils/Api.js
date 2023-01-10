@@ -25,6 +25,7 @@ class Api {
   getUserInfo() {
     return this._request(`${this._adress}/users/me`, {
       method: "GET",
+      credentials: 'include',
       headers: this._headers,
     },
       consoleMessage.GET + ' data of user'
@@ -37,7 +38,7 @@ class Api {
     return this._request(`${this._adress}/users/me`, {
       method: "PATCH",
       headers: this._headers,
-
+      credentials: 'include',
       body: JSON.stringify({
         name: user.name,
         about: user.about
@@ -52,7 +53,7 @@ class Api {
     return this._request(`${this._adress}/users/me/avatar`, {
       method: "PATCH",
       headers: this._headers,
-
+      credentials: 'include',
       body: JSON.stringify({
         avatar: avatar
       })
@@ -65,6 +66,7 @@ class Api {
   getCardArray() {
     return this._request(`${this._adress}/cards`, {
       method: "GET",
+      credentials: 'include',
       headers: this._headers,
     },
       consoleMessage.GET + ' array cards',
@@ -75,6 +77,7 @@ class Api {
   addNewCard(card) {
     return this._request(`${this._adress}/cards`, {
       method: "POST",
+      credentials: 'include',
       headers: this._headers,
       body: JSON.stringify({
         name: card.name,
@@ -89,6 +92,7 @@ class Api {
   deleteCard(card) {
     return this._request(`${this._adress}/cards/${card._id}`, {
       method: "DELETE",
+      credentials: 'include',
       headers: this._headers,
     },
       consoleMessage.DELETE + ' card',
@@ -106,6 +110,7 @@ class Api {
 
     return this._request(`${this._adress}/cards/${card._id}/likes`, {
       method: action,
+      credentials: 'include',
       headers: this._headers,
     },
       consoleMessage[`${action}`] + ' like'

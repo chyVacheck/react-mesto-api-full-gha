@@ -40,20 +40,47 @@ class Auth {
 
   //? авторизация
   authorization(email, password) {
-    return this._sign(email, password, "signin", "авторизации")
+    return fetch(`${this._adress}/signin`, {
+      method: "POST",
+      // ! сделать проверку на signin и signup
+      credentials: 'include',
+      headers: this._headers,
+      body: JSON.stringify({
+        password: password,
+        email: email
+      }),
+    })
+      //? проверяем
+      .then((res) => {
+        return this._checkResponse(res, 'авторизации');
+      })
   }
 
+
   //? проверка токена
-  validationJWT(token, message) {
+  validationJWT(message) {
     return fetch(`${this._adress}/users/me`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
+      method: "GET",
+      credentials: 'include',
+      headers: this._headers,
     })
       //? проверяем
       .then((res) => {
         return this._checkResponse(res, message);
+      })
+  }
+
+  logOut() {
+    return fetch(`${this._adress}/signout`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      //? проверяем
+      .then((res) => {
+        return this._checkResponse(res, 'выйти из сети');
       })
   }
 }
@@ -62,6 +89,6 @@ export const auth = new Auth({
   baseUrl: baseUrl,
   headers: {
     "origin": baseUrl,
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
