@@ -68,19 +68,17 @@ function App() {
 
   //? запрос token
   useEffect(() => {
-    const token = localStorage.getItem('jwt');
-    if (token) {
-      handleToken(token);
-    }
-  }, [loggedIn])
+    handleToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loggedIn]);
 
   //? проверяем авторизацию и делаем запрос на сервер
   useEffect(() => {
     if (loggedIn) {
       //? запрос данных о пользователе
       api.getUserInfo()
-        .then((data) => {
-          setCurrentUser(data); //* устанавливаем данные пользователя получаенные с сервера
+        .then((result) => {
+          setCurrentUser(result.data); //* устанавливаем данные пользователя получаенные с сервера
         })
         .catch((error) => {
           //* Выводим сообщение для быстрого понимания, где конкретно была ошибка
@@ -146,8 +144,8 @@ function App() {
   function handleUpdateUser(newUserInfo) {
     setIsLoading(true);
     api.setUserInfo(newUserInfo)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((result) => {
+        setCurrentUser(result.data);
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка: ${err}`))
@@ -159,8 +157,8 @@ function App() {
   function handleUpdateAvatar(newAvatar) {
     setIsLoading(true);
     api.setUserAvatar(newAvatar)
-      .then((data) => {
-        setCurrentUser(data);
+      .then((result) => {
+        setCurrentUser(result.data);
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка: ${err}`))
@@ -172,8 +170,10 @@ function App() {
   function handleAddPlaceSubmit(card) {
     setIsLoading(true);
     api.addNewCard(card)
-      .then((newCard) => {
-        setCards([newCard, ...cards]);
+      .then((Card) => {
+        let newCard = Card;
+        newCard.data.owner = currentUser;
+        setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
       .catch(err => console.log(`Ошибка: ${err}`))
@@ -186,7 +186,7 @@ function App() {
     //? Отправляем запрос в API и получаем обновлённые данные карточки
     api.changeLike(card, currentUser._id)
       .then((newCard) => {
-        setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+        setCards((state) => state.map((item) => item._id === card._id ? newCard : item));
       })
       .catch((error) => {
         //? Выводим сообщение для быстрого понимания, где конкретно была ошибка
@@ -242,22 +242,20 @@ function App() {
     auth
       .authorization(email, password)
       .then((res) => {
-        localStorage.setItem('jwt', res.token);
-        if (localStorage.getItem('jwt')) {
-          setLoggedIn(true);
-          setCurrentEmail(email);
-          navigate('/');
-        }
+        setLoggedIn(true);
+        setCurrentEmail(email);
+        navigate('/');
       })
       .catch((err) => {
+        setLoggedIn(false);
         setInfoTooltip(true); //todo передавать разные значения ответов
         return console.log(err);
       })
   }
 
-  function handleToken(token) {
+  function handleToken() {
     auth
-      .validationJWT(token, "проверки токена")
+      .validationJWT("проверки токена")
       .then((res) => {
         if (res) {
           setLoggedIn(true);
@@ -266,12 +264,17 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(`Запрос на сервер (auth.nomoreparties.co) с целью проверки токена выдал: ${err}`);
+        console.log(`Запрос на сервер с целью проверки токена выдал: ${err}`);
       })
   }
 
   function handleSignOut() {
-    localStorage.removeItem('jwt');
+    auth
+      .logOut()
+      .then((res) => {
+        setLoggedIn(false)
+        navigate('/signin')
+      })
     setLoggedIn(false);
     setCurrentEmail('');
   }

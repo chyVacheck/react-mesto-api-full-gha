@@ -66,12 +66,22 @@ class Users {
     return user.findUserByCredentials(email, password)
       .then((data) => {
         const token = jwt.sign({ _id: data._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
-        res.cookie('jwt', token, { expires: new Date(Date.now() + 12 * 3600000), httpOnly: true, sameSite: true });
-        res.send({ message: 'User is authorized!', token });
+        res.cookie('jwt', token, {
+          expires: new Date(Date.now() + 12 * 3600000),
+          httpOnly: true,
+          sameSite: true,
+          secure: true,
+        });
+        res.send({ message: 'User is authorized!' });
       })
       .catch((err) => {
         next(err);
       });
+  }
+
+  signOut(req, res, next) {
+    res.clearCookie('jwt').send({ message: MESSAGE.INFO.LOGOUT })
+      .catch(next);
   }
 
   // * GET
@@ -87,7 +97,7 @@ class Users {
     user.findById(req.params.userId)
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .then((data) => {
-        res.send({ user: data });
+        res.send(data);
       })
       .catch((err) => {
         if (err.name === 'CastError') {
@@ -117,12 +127,12 @@ class Users {
       { new: true, runValidators: true },
     )
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
-      .then(() => {
+      .then((newUser) => {
         res.status(STATUS.INFO.OK)
           .send({
             message: `INFO ${MESSAGE.INFO.PATCH}`,
             // eslint-disable-next-line object-shorthand
-            data: { name: name, about: about },
+            data: newUser,
           });
       })
       .catch((err) => setInfoError(err, next));
@@ -137,8 +147,8 @@ class Users {
       { new: true, runValidators: true },
     )
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
-      .then((data) => {
-        res.status(STATUS.INFO.OK).send({ message: `AVATAR ${MESSAGE.INFO.PATCH}`, avatar: data });
+      .then((newUser) => {
+        res.status(STATUS.INFO.OK).send({ message: `AVATAR ${MESSAGE.INFO.PATCH}`, data: newUser });
       })
       .catch((err) => setInfoError(err, next));
   }

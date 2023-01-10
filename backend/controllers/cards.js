@@ -18,8 +18,8 @@ class Cards {
   // ? создает карточку
   createOne(req, res, next) {
     const { name, link } = req.body;
-    card.create({ name, link, owner: req.user._id })
-      .then((data) => res.status(STATUS.INFO.CREATED).send({ message: `CARD ${MESSAGE.INFO.CREATED}`, Data: data }))
+    card.create({ name, link, owner: req.user })
+      .then((newCard) => res.status(STATUS.INFO.CREATED).send({ message: `CARD ${MESSAGE.INFO.CREATED}`, data: newCard }))
       .catch((err) => {
         if (err.name === 'ValidationError') {
           next(new BadRequestError(MESSAGE.ERROR.BAD_REQUEST));
@@ -66,7 +66,7 @@ class Cards {
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .populate(['likes', 'owner'])
       .then((newCard) => {
-        res.status(STATUS.INFO.OK).send({ data: newCard });
+        res.status(STATUS.INFO.OK).send(newCard);
       })
       .catch((err) => {
         if (err.name === 'CastError') {
@@ -87,7 +87,7 @@ class Cards {
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .populate(['likes', 'owner'])
       .then((newCard) => {
-        res.status(STATUS.INFO.OK).send({ data: newCard });
+        res.status(STATUS.INFO.OK).send(newCard);
       })
       .catch((err) => {
         if (err.name === 'CastError') {
