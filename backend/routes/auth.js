@@ -24,4 +24,6 @@ routerAuth.post('/signin', celebrate({
   }),
 }), users.login);
 
+routerAuth.post('/signout', users.signOut);
+
 module.exports = routerAuth;
