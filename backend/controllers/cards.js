@@ -9,7 +9,7 @@ const { BadRequestError, ForbiddenError, NotFoundError } = require('../errors/Al
 class Cards {
   // ? возвращает все карточки
   getAll(req, res, next) {
-    card.find({})
+    card.find({}).sort({ createdAt: -1 })
       .populate(['likes', 'owner'])
       .then((cards) => res.send(cards))
       .catch(next);
