@@ -30,13 +30,14 @@ app.use(cors(DEFAULT_VALUES.CORS_OPTIONS));
 
 // * protection
 app.use(helmet());
-app.use(limiter.simpleRequest);
 
 app.use(cookieParser());
 app.use(express.json());
 
 // * requests logger
 app.use(Logger.request);
+
+app.use(limiter.simpleRequest);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
