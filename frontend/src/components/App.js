@@ -68,9 +68,7 @@ function App() {
 
   //? запрос token
   useEffect(() => {
-    if (loggedIn) {
-      handleToken();
-    }
+    handleToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
 
