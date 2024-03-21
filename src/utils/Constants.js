@@ -1,6 +1,5 @@
-//? адресс сервера для получение данных
-// export const baseUrl = 'https://api.chyvacheck.students.nomoredomains.club';
-export const baseUrl = "http://localhost:3001";
+//? адрес сервера для получение данных
+export const baseUrl = "https://mesto.adaptable.app";
 
 export const consoleMessage = {
   PUT: "add",
