@@ -1,5 +1,0 @@
-.sign__form {
-  display: flex;
-  flex-direction: column;
-  height: calc(100% - 17px - 15px);
-}
