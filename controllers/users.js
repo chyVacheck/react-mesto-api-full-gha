@@ -18,7 +18,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const { BadRequestError, ConflictError } = require('../errors/AllErrors');
 
 function setInfoError(err, next) {
-  if ((err.name === 'ValidationError') || (err.name === 'CastError')) {
+  if (err.name === 'ValidationError' || err.name === 'CastError') {
     next(new BadRequestError(MESSAGE.ERROR.BAD_REQUEST));
   } else {
     next(err);
@@ -29,14 +29,19 @@ class Users {
   // * POST
   // ? создает пользователя
   createOne(req, res, next) {
-    const {
-      name, about, avatar, email, password,
-    } = req.body;
+    const { name, about, avatar, email, password } = req.body;
 
-    bcrypt.hash(password, 10)
-      .then((hash) => user.create({
-        name, about, avatar, email, password: hash,
-      }))
+    bcrypt
+      .hash(password, 10)
+      .then((hash) =>
+        user.create({
+          name,
+          about,
+          avatar,
+          email,
+          password: hash,
+        }),
+      )
       .then((data) => {
         res.status(STATUS.INFO.CREATED).send({
           message: MESSAGE.INFO.CREATED,
@@ -63,13 +68,14 @@ class Users {
   // ? авторизоация пользователя
   login(req, res, next) {
     const { email, password } = req.body;
-    return user.findUserByCredentials(email, password)
+    return user
+      .findUserByCredentials(email, password)
       .then((data) => {
         const token = jwt.sign({ _id: data._id }, NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret');
         res.cookie('jwt', token, {
           expires: new Date(Date.now() + 12 * 3600000),
           httpOnly: true,
-          sameSite: true,
+          sameSite: 'None',
           secure: true,
         });
         res.send({ message: 'User is authorized!' });
@@ -80,21 +86,22 @@ class Users {
   }
 
   signOut(req, res, next) {
-    res.clearCookie('jwt').send({ message: MESSAGE.INFO.LOGOUT })
-      .catch(next);
+    res.clearCookie('jwt').send({ message: MESSAGE.INFO.LOGOUT }).catch(next);
   }
 
   // * GET
   // ? возвращает всех пользователей
   getAll(req, res, next) {
-    user.find({})
+    user
+      .find({})
       .then((users) => res.send(users))
       .catch(next);
   }
 
   // ? возвращает пользователя по _id
   getOne(req, res, next) {
-    user.findById(req.params.userId)
+    user
+      .findById(req.params.userId)
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .then((data) => {
         res.send(data);
@@ -110,7 +117,8 @@ class Users {
 
   // ? возвращает текущего пользователя по _id
   getMe(req, res, next) {
-    user.findById(req.user._id)
+    user
+      .findById(req.user._id)
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .then((userMe) => res.send({ data: userMe }))
       .catch(next);
@@ -121,19 +129,15 @@ class Users {
   setUserInfo(req, res, next) {
     const { name, about } = req.body;
 
-    user.findByIdAndUpdate(
-      req.user._id,
-      { name, about },
-      { new: true, runValidators: true },
-    )
+    user
+      .findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .then((newUser) => {
-        res.status(STATUS.INFO.OK)
-          .send({
-            message: `INFO ${MESSAGE.INFO.PATCH}`,
-            // eslint-disable-next-line object-shorthand
-            data: newUser,
-          });
+        res.status(STATUS.INFO.OK).send({
+          message: `INFO ${MESSAGE.INFO.PATCH}`,
+          // eslint-disable-next-line object-shorthand
+          data: newUser,
+        });
       })
       .catch((err) => setInfoError(err, next));
   }
@@ -141,11 +145,8 @@ class Users {
   // ? устанавливает новый аватар пользователя
   setUserAvatar(req, res, next) {
     const { avatar } = req.body;
-    user.findByIdAndUpdate(
-      req.user._id,
-      { avatar },
-      { new: true, runValidators: true },
-    )
+    user
+      .findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
       .orFail(() => new NotFoundError(MESSAGE.ERROR.NOT_FOUND))
       .then((newUser) => {
         res.status(STATUS.INFO.OK).send({ message: `AVATAR ${MESSAGE.INFO.PATCH}`, data: newUser });

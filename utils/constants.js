@@ -64,7 +64,7 @@ const DEFAULT_VALUES = {
   },
   ALLOWED_METHODS: 'GET,HEAD,POST,PATCH,DELETE',
   CORS_OPTIONS: {
-    origin: ['https://chyvacheck-mesto.netlify.app/'],
+    origin: '*',
     optionsSuccessStatus: 200,
     credentials: true,
   },
