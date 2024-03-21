@@ -1,0 +1,16 @@
+.sign__input {
+  width: 100%;
+  background-color: transparent;
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  padding: 0;
+  border: 0;
+  color: #fff;
+}
+
+.sign__input:focus-visible {
+  outline: none;
+}

@@ -1,0 +1,36 @@
+.profile__info {
+  margin: 0;
+  width: 100%;
+  max-width: 536px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px 0;
+
+  position: relative;
+  /*? настройки шрифтов для дочерних элементов */
+  font-style: normal;
+}
+
+/*? 544 - 1152 */
+@media screen and (min-width: 544px) and (max-width: 1152px) {
+  .profile__info {
+    max-width: 336px;
+    gap: 15px 0;
+  }
+}
+
+/*? 320 - 544 */
+@media screen and (min-width: 320px) and (max-width: 544px) {
+  .profile__info {
+    max-width: 336px;
+    gap: 14px 0;
+  }
+}
+
+/*? 320 - 1152 */
+@media screen and (min-width: 320px) and (max-width: 1152px) {
+  .profile__info {
+    margin-top: 22.5px;
+    text-align: center;
+  }
+}

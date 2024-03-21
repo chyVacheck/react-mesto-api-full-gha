@@ -1,0 +1,29 @@
+.footer {
+  margin: 67px calc((100% - 880px) / 2) 0;
+
+  max-width: 318px;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+
+  color: #545454;
+  font-family: 'Inter', Arial, sans-serif;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1152px) {
+  .footer {
+    max-width: 300px;
+    margin: 57.5px calc((100% - 581px) / 2) 0;
+    font-size: 16px;
+    line-height: 19.5px;
+  }
+}
+
+@media screen and (min-width: 320px) and (max-width: 768px) {
+  .footer {
+    max-width: 282px;
+    margin: 48px auto 0;
+    font-size: 14px;
+    line-height: 17px;
+  }
+}
