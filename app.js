@@ -26,7 +26,7 @@ const { PORT = 3001, ADDRESS_DB = 'mongodb://localhost:27017/mesto' } = process.
 const app = express();
 
 // * CORS
-app.use(cors('*')); // DEFAULT_VALUES.CORS_OPTIONS
+app.use(); // DEFAULT_VALUES.CORS_OPTIONS
 
 // * protection
 app.use(helmet());
