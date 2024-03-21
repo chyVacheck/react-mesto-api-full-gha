@@ -1,5 +1,4 @@
-
-import SingForm from '../signForm/SignForm.js';
+import SingForm from "../signForm/SignForm.js";
 
 function Login({ handleAuthorization }) {
   return (
@@ -7,13 +6,13 @@ function Login({ handleAuthorization }) {
       <article className="sign__container">
         <SingForm
           onSubmit={handleAuthorization}
-          formTitle={'Вход'}
-          submitTitle={'Войти'}
-          id={'login'}
+          formTitle={"Login"}
+          submitTitle={"Login"}
+          id={"login"}
         />
       </article>
     </section>
-  )
+  );
 }
 
 export default Login;

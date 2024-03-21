@@ -1,7 +1,5 @@
-
 import React from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
-
 
 function Card(props) {
   const name = props.name;
@@ -13,13 +11,17 @@ function Card(props) {
   const isOwn = props.card.owner._id === currentUser._id;
 
   //? Создаём переменную, которую после зададим в `className` для кнопки удаления
-  const cardDeleteButtonClassName = `button elements__card-trash${isOwn ? '' : ' elements__card-trash_invisible'}`;
+  const cardDeleteButtonClassName = `button elements__card-trash${
+    isOwn ? "" : " elements__card-trash_invisible"
+  }`;
 
   //? Определяем, есть ли у карточки лайк, поставленный текущим пользователем
-  const isLiked = props.card.likes.some((i) => i._id === currentUser._id)
+  const isLiked = props.card.likes.some((i) => i._id === currentUser._id);
 
   //? Создаём переменную, которую после зададим в `className` для кнопки лайка
-  const cardLikeButtonClassName = `elements__card-like button${isLiked ? ' elements__card-like_active' : ''}`;
+  const cardLikeButtonClassName = `elements__card-like button${
+    isLiked ? " elements__card-like_active" : ""
+  }`;
 
   function handleClick() {
     props.onCardClick(props.card);
@@ -36,7 +38,7 @@ function Card(props) {
       <button
         id="button-trash"
         onClick={handleDeleteClick}
-        aria-label="удалить карточку"
+        aria-label="delete place"
         type="button"
         className={`${cardDeleteButtonClassName}`}
       />
@@ -49,14 +51,15 @@ function Card(props) {
           <button
             onClick={handleLikeClick}
             id="button-like"
-            aria-label="поставить или убрать лайк"
+            aria-label="Add or delete like"
             type="button"
             className={`${cardLikeButtonClassName}`}
           />
           <p className="elements__card-like-number">{length}</p>
         </div>
       </div>
-    </li>)
+    </li>
+  );
 }
 
 export default Card;

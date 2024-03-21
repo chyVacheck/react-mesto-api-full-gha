@@ -1,34 +1,38 @@
+import { useState, useEffect } from "react";
+import ProtectedRoute from "./protectedRouter/ProtectedRouter.js";
 
-import { useState, useEffect } from 'react';
-import ProtectedRoute from './protectedRouter/ProtectedRouter.js';
+//? компоненты
+import Header from "./header/Header.js";
+import Login from "./login/Login.js";
+import Register from "./register/Register.js";
+import Main from "./main/Main.js";
+import Footer from "./footer/Footer.js";
+import PopupWithForm from "./popupWithForm/PopupWithForm.js";
+import ImagePopup from "./imagePopup/ImagePopup.js";
+import InfoTooltip from "./infoTooltip/InfoTooltip.js";
+import BurgerMenu from "./burgerMenu/burgerMenu.js";
 
-//? компоненты 
-import Header from './header/Header.js';
-import Login from './login/Login.js';
-import Register from './register/Register.js';
-import Main from './main/Main.js';
-import Footer from './footer/Footer.js';
-import PopupWithForm from './popupWithForm/PopupWithForm.js';
-import ImagePopup from './imagePopup/ImagePopup.js';
-import InfoTooltip from './infoTooltip/InfoTooltip.js';
-import BurgerMenu from './burgerMenu/burgerMenu.js';
+import { api } from "../utils/Api.js";
+import { auth } from "../utils/Auth.js";
 
-import { api } from '../utils/Api.js';
-import { auth } from '../utils/Auth.js';
+import successfulIcon from "../images/InfoTooltip/successful-icon.svg";
+import unsuccessfulIcon from "../images/InfoTooltip/unsuccessful-icon.svg";
 
-import successfulIcon from '../images/InfoTooltip/successful-icon.svg';
-import unsuccessfulIcon from '../images/InfoTooltip/unsuccessful-icon.svg';
-
-import { Routes, useNavigate, Navigate, Route, NavLink } from 'react-router-dom';
-import { CurrentUserContext } from './../contexts/CurrentUserContext.js';
+import {
+  Routes,
+  useNavigate,
+  Navigate,
+  Route,
+  NavLink,
+} from "react-router-dom";
+import { CurrentUserContext } from "./../contexts/CurrentUserContext.js";
 
 //? импорт всех поп-ап`ов
-import EditProfilePopup from './editProfilePopup/EditProfilePopup.js';
-import EditAvatarPopup from './editAvatarPopup/EditAvatarPopup.js';
-import AddPlacePopup from './addPlacePopup/AddPlacePopup.js';
+import EditProfilePopup from "./editProfilePopup/EditProfilePopup.js";
+import EditAvatarPopup from "./editAvatarPopup/EditAvatarPopup.js";
+import AddPlacePopup from "./addPlacePopup/AddPlacePopup.js";
 
 function App() {
-
   const navigate = useNavigate();
 
   //? хуки открытия поп-апов
@@ -47,12 +51,12 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
 
   //? infoTooltip, сообщение и иконка
-  const [infoTooltipMessage, setInfoTooltipMessage] = useState('');
+  const [infoTooltipMessage, setInfoTooltipMessage] = useState("");
   const [infoTooltipImage, setInfoTooltipImage] = useState(unsuccessfulIcon);
 
   //? пользователь данные и аватар
   const [currentUser, setCurrentUser] = useState({});
-  const [currentEmail, setCurrentEmail] = useState('');
+  const [currentEmail, setCurrentEmail] = useState("");
 
   //? выбранная карточка
   const [selectedCard, setSelectedCard] = useState(null);
@@ -61,9 +65,13 @@ function App() {
   const [cards, setCards] = useState([]);
 
   //? Открыт хоть один поп-ап
-  const isOpen = (isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard);
+  const isOpen =
+    isEditAvatarPopupOpen ||
+    isEditProfilePopupOpen ||
+    isAddPlacePopupOpen ||
+    selectedCard;
 
-  //? Ожидание ответа с сервера 
+  //? Ожидание ответа с сервера
   const [isLoading, setIsLoading] = useState(false);
 
   //? запрос token
@@ -76,44 +84,47 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       //? запрос данных о пользователе
-      api.getUserInfo()
+      api
+        .getUserInfo()
         .then((result) => {
           setCurrentUser(result.data); //* устанавливаем данные пользователя получаенные с сервера
         })
         .catch((error) => {
           //* Выводим сообщение для быстрого понимания, где конкретно была ошибка
-          console.log('Ошибка во время запроса данных о пользователе');
+          console.log("Error while getting info about user");
           console.log(error);
-        })
+        });
 
       //? запрос на карточки
-      api.getCardArray()
+      api
+        .getCardArray()
         .then((res) => {
           setCards(res); //* устанавливаем карточки получаенные с сервера
         })
         .catch((error) => {
           //* Выводим сообщение для быстрого понимания, где конкретно была ошибка
-          console.log('Ошибка во время запроса карточек');
+          console.log("Error while getting cards");
           console.log(error);
-        })
+        });
     }
-  }, [loggedIn])
+  }, [loggedIn]);
 
   //? вешаем слушатель нажатия кнопки Escape
   useEffect(() => {
     function closeByEscape(evt) {
-      if (evt.key === 'Escape') {
+      if (evt.key === "Escape") {
         closeAllPopups();
       }
     }
 
-    if (isOpen) { //? навешиваем только при открытии
-      document.addEventListener('keydown', closeByEscape);
+    if (isOpen) {
+      //? навешиваем только при открытии
+      document.addEventListener("keydown", closeByEscape);
       return () => {
-        document.removeEventListener('keydown', closeByEscape);
-      }
+        document.removeEventListener("keydown", closeByEscape);
+      };
     }
-  }, [isOpen])
+  }, [isOpen]);
 
   function closeAllPopups() {
     setIsEditAvatarPopupOpen(false);
@@ -143,81 +154,91 @@ function App() {
 
   function handleUpdateUser(newUserInfo) {
     setIsLoading(true);
-    api.setUserInfo(newUserInfo)
+    api
+      .setUserInfo(newUserInfo)
       .then((result) => {
         setCurrentUser(result.data);
         closeAllPopups();
       })
-      .catch(err => console.log(`Ошибка: ${err}`))
+      .catch((err) => console.log(`Error: ${err}`))
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   }
 
   function handleUpdateAvatar(newAvatar) {
     setIsLoading(true);
-    api.setUserAvatar(newAvatar)
+    api
+      .setUserAvatar(newAvatar)
       .then((result) => {
         setCurrentUser(result.data);
         closeAllPopups();
       })
-      .catch(err => console.log(`Ошибка: ${err}`))
+      .catch((err) => console.log(`Error: ${err}`))
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   }
 
   function handleAddPlaceSubmit(card) {
     setIsLoading(true);
-    api.addNewCard(card)
+    api
+      .addNewCard(card)
       .then((Card) => {
         let newCard = Card;
         newCard.data.owner = currentUser;
         setCards([newCard.data, ...cards]);
         closeAllPopups();
       })
-      .catch(err => console.log(`Ошибка: ${err}`))
+      .catch((err) => console.log(`Error: ${err}`))
       .finally(() => {
         setIsLoading(false);
-      })
+      });
   }
 
   function handleCardLike(card) {
     //? Отправляем запрос в API и получаем обновлённые данные карточки
-    api.changeLike(card, currentUser._id)
+    api
+      .changeLike(card, currentUser._id)
       .then((newCard) => {
-        setCards((state) => state.map((item) => item._id === card._id ? newCard : item));
+        setCards((state) =>
+          state.map((item) => (item._id === card._id ? newCard : item))
+        );
       })
       .catch((error) => {
         //? Выводим сообщение для быстрого понимания, где конкретно была ошибка
-        console.log('Ошибка во время запроса лайка карточки');
-        console.log('Id: ', card._id);
+        console.log("Error while liking card");
+        console.log("Id: ", card._id);
         console.log(error);
-      })
+      });
   }
 
   function handleCardDelete(card) {
     //? Отправляем запрос в API на удаление карточки
-    api.deleteCard(card)
+    api
+      .deleteCard(card)
       .then(() => {
         setCards((state) =>
           state.filter((c) => (c._id === card._id ? false : true))
-        )
+        );
       })
       .catch((error) => {
         //? Выводим сообщение для быстрого понимания, где конкретно была ошибка
-        console.log('Ошибка во время запроса на удаление карточки');
-        console.log('Id: ', card._id);
+        console.log("Error while deleting card");
+        console.log("Id: ", card._id);
         console.log(error);
-      })
+      });
   }
 
-  function setInfoTooltip(error = false, message) {
+  function setInfoTooltip(
+    error = false,
+    message = "Something was wrong ! Try one more time."
+  ) {
     if (error) {
-      setInfoTooltipMessage(message ? message : 'Что-то пошло не так! Попробуйте ещё раз.');
+      setInfoTooltipMessage(message);
       setInfoTooltipImage(unsuccessfulIcon);
     } else {
-      setInfoTooltipMessage(message ? message : 'Вы успешно зарегистрировались!');
+      setInfoTooltipMessage(message);
       setInfoTooltipImage(successfulIcon);
     }
     setIsInfoTooltipPopupOpen(true);
@@ -228,14 +249,14 @@ function App() {
       .registration(email, password)
       .then((res) => {
         if (res.status !== 400) {
-          setInfoTooltip();
-          navigate('/');
+          setInfoTooltip(false, "You have been successful registered!");
+          navigate("/");
         }
       })
       .catch((err) => {
         setInfoTooltip(true); //todo передавать разные значения ответов
         return console.log(err);
-      })
+      });
   }
 
   function handleAuthorization(email, password) {
@@ -244,39 +265,37 @@ function App() {
       .then((res) => {
         setLoggedIn(true);
         setCurrentEmail(email);
-        navigate('/');
+        navigate("/");
       })
       .catch((err) => {
         setLoggedIn(false);
         setInfoTooltip(true); //todo передавать разные значения ответов
         return console.log(err);
-      })
+      });
   }
 
   function handleToken() {
     auth
-      .validationJWT("проверки токена")
+      .validationJWT("check token")
       .then((res) => {
         if (res) {
           setLoggedIn(true);
           setCurrentEmail(res.data.email);
-          navigate('/');
+          navigate("/");
         }
       })
       .catch((err) => {
-        console.log(`Запрос на сервер с целью проверки токена выдал: ${err}`);
-      })
+        console.log(`Request to server to check token return: ${err}`);
+      });
   }
 
   function handleSignOut() {
-    auth
-      .logOut()
-      .then((res) => {
-        setLoggedIn(false)
-        navigate('/signin')
-      })
+    auth.logOut().then((res) => {
+      setLoggedIn(false);
+      navigate("/signin");
+    });
     setLoggedIn(false);
-    setCurrentEmail('');
+    setCurrentEmail("");
   }
 
   function openCloseBugrer() {
@@ -292,13 +311,16 @@ function App() {
           exact
           path="/"
           element={
-            <ProtectedRoute
-              loggedIn={loggedIn}
-            >
+            <ProtectedRoute loggedIn={loggedIn}>
               {/* шапка сайта, блок header */}
-              <article id='info' className={isInfoOpen ? 'info info_active' : 'info'}>
-                <p className='info__email'>{currentEmail}</p>
-                <button className='info__button button' onClick={handleSignOut}>Выйти</button>
+              <article
+                id="info"
+                className={isInfoOpen ? "info info_active" : "info"}
+              >
+                <p className="info__email">{currentEmail}</p>
+                <button className="info__button button" onClick={handleSignOut}>
+                  Logout
+                </button>
               </article>
 
               <Header>
@@ -307,7 +329,8 @@ function App() {
                   setClose={setIsIconCloseBurgerMenu}
                   onClick={openCloseBugrer}
                   currentEmail={currentEmail}
-                  handleSignOut={handleSignOut} />
+                  handleSignOut={handleSignOut}
+                />
               </Header>
               {/* основная часть сайта, блок main */}
               <Main
@@ -356,50 +379,48 @@ function App() {
 
               {/*//* delete pop-up */}
               <PopupWithForm
-                name='delete'
-                popupTitle='Вы уверены?'
-                buttonTitle='Да'
+                name="delete"
+                popupTitle="Are you sure ?"
+                buttonTitle="Yes"
                 isOpen={false}
                 onClose={closeAllPopups}
               />
             </ProtectedRoute>
-          }>
-        </Route>
+          }
+        ></Route>
 
         {/* регистрация */}
         <Route
-          path='/signup'
+          path="/signup"
           element={
             <>
               <Header>
-                <NavLink className='header__link link' to='/signin'>Войти</NavLink>
+                <NavLink className="header__link link" to="/signin">
+                  Login
+                </NavLink>
               </Header>
               <Register handleRegistration={handleRegistration} />
             </>
-          }>
-        </Route>
+          }
+        ></Route>
 
         {/* авторизация */}
         <Route
-          path='/signin'
+          path="/signin"
           element={
             <>
               <Header>
-                <NavLink className='header__link link' to='/signup'>Регистрация</NavLink>
+                <NavLink className="header__link link" to="/signup">
+                  Register
+                </NavLink>
               </Header>
               <Login handleAuthorization={handleAuthorization} />
             </>
-          }>
-        </Route>
+          }
+        ></Route>
 
         {/* все остальное */}
-        <Route
-          path="*"
-          element={
-            <Navigate to="/" />
-          }>
-        </Route>
-
+        <Route path="*" element={<Navigate to="/" />}></Route>
       </Routes>
 
       <InfoTooltip
@@ -408,8 +429,7 @@ function App() {
         message={infoTooltipMessage}
         onClose={closeAllPopups}
       />
-
-    </CurrentUserContext.Provider >
+    </CurrentUserContext.Provider>
   );
 }
 

@@ -2,7 +2,7 @@ function Footer() {
   const data = new Date().getFullYear();
   return (
     <footer className="footer" lang="en">
-      <p>© {data} Mesto</p>
+      <p>© 2022 - {data} Mesto</p>
     </footer>
   );
 }

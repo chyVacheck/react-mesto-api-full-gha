@@ -1,15 +1,13 @@
-
 import React from "react";
-import defaultAvatar from '../../images/avatar.png'
+import defaultAvatar from "../../images/avatar.png";
 
 //? импорт компонентов
-import Card from './../card/Card.js';
+import Card from "./../card/Card.js";
 
 //? импорт данных о пользователе
 import { CurrentUserContext } from "../../contexts/CurrentUserContext.js";
 
 function Main(props) {
-
   const cards = props.cards;
   const handleCardDelete = props.handleCardDelete;
   const handleCardLike = props.handleCardLike;
@@ -28,24 +26,30 @@ function Main(props) {
       <section className="profile">
         <div
           onClick={handleEditAvatarClick}
-          style={{ backgroundImage: `url(${currentUser.avatar || defaultAvatar})` }}
-          className="profile__avatar">
-        </div>
+          style={{
+            backgroundImage: `url(${currentUser.avatar || defaultAvatar})`,
+          }}
+          className="profile__avatar"
+        ></div>
         <div className="profile__info">
           <div className="profile__nick-and-button">
-            <h1 className="profile__nickname">{currentUser.name || 'Жак-Ив Кусто'}</h1>
+            <h1 className="profile__nickname">
+              {currentUser.name || "Жак-Ив Кусто"}
+            </h1>
             <button
               onClick={handleEditProfileClick}
-              aria-label="открытие редактирования профиля"
+              aria-label="open update profile"
               type="button"
               className="profile__edit-button button"
             />
           </div>
-          <p className="profile__description">{currentUser.about || 'Исследователь мирового океана'}</p>
+          <p className="profile__description">
+            {currentUser.about || "Searcher of ocean"}
+          </p>
         </div>
         <button
           onClick={handleAddPlaceClick}
-          aria-label="открытие добавление новой карточки"
+          aria-label="open window to add new card"
           type="button"
           className="profile__add-button button"
         />
@@ -64,12 +68,13 @@ function Main(props) {
                 card={item}
                 length={item.likes.length}
                 onCardClick={props.onCardClick}
-              />);
+              />
+            );
           })}
         </ul>
       </section>
     </main>
-  )
+  );
 }
 
 export default Main;

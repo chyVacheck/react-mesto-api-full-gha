@@ -1,18 +1,13 @@
-
 import React from "react";
 import { CurrentUserContext } from "../../contexts/CurrentUserContext";
 import PopupWithForm from "../popupWithForm/PopupWithForm";
-import Input from '../input/Input.js';
+import Input from "../input/Input.js";
 import useForm from "../../hooks/useForm";
 
-function EditProfilePopup(props) {
-
-  const isEditProfilePopupOpen = props.isOpen;
-  const closeAllPopups = props.onClose;
-
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, isLoading }) {
   const { values, handleChange, setValues } = useForm({
-    name: '',
-    about: ''
+    name: "",
+    about: "",
   });
 
   //? Подписка на контекст
@@ -23,13 +18,13 @@ function EditProfilePopup(props) {
   React.useEffect(() => {
     setValues({
       name: currentUser.name,
-      about: currentUser.about
+      about: currentUser.about,
     });
-  }, [currentUser, isEditProfilePopupOpen]);
+  }, [currentUser, isOpen, setValues]);
 
   function handleSubmit(evt) {
     evt.preventDefault();
-    props.onUpdateUser({
+    onUpdateUser({
       name: values.name,
       about: values.about,
     });
@@ -38,44 +33,43 @@ function EditProfilePopup(props) {
   return (
     <PopupWithForm
       onSubmit={handleSubmit}
-      name='profile'
-      popupTitle='Редактировать профиль'
-      buttonTitle={props.isLoading ? 'Сохранение...' : 'Сохранить'}
-      isOpen={isEditProfilePopupOpen}
-      onClose={closeAllPopups}
+      name="profile"
+      popupTitle="Update profile"
+      buttonTitle={isLoading ? "Saving..." : "Save"}
+      isOpen={isOpen}
+      onClose={onClose}
     >
       {/* name */}
       <Input
-        isOpen={isEditProfilePopupOpen}
+        isOpen={isOpen}
         value={values.name}
         handleChange={handleChange}
-        name={'name'}
-        type={'text'}
+        name={"name"}
+        type={"text"}
         minLength={2}
         maxLength={40}
         required={true}
-        placeholder={'Введите имя'}
-        id_name_popup={'edit'}
-        id_name={'name'}
+        placeholder={"Enter name"}
+        id_name_popup={"edit"}
+        id_name={"name"}
       />
 
       {/* info */}
       <Input
-        isOpen={isEditProfilePopupOpen}
+        isOpen={isOpen}
         value={values.about}
         handleChange={handleChange}
-        name={'about'}
-        type={'text'}
+        name={"about"}
+        type={"text"}
         minLength={2}
         maxLength={200}
         required={true}
-        placeholder={'Введите информацию о вас'}
-        id_name_popup={'edit'}
-        id_name={'info'}
+        placeholder={"Enter info about you"}
+        id_name_popup={"edit"}
+        id_name={"info"}
       />
-
-    </PopupWithForm >
-  )
+    </PopupWithForm>
+  );
 }
 
 export default EditProfilePopup;

@@ -58,19 +58,13 @@ const logFileNames = {
 
 const DEFAULT_VALUES = {
   USER: {
-    NAME: 'Жак-Ив Кусто',
-    ABOUT: 'Исследователь',
+    NAME: 'Nice user',
+    ABOUT: 'Who know',
     AVATAR: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
   },
   ALLOWED_METHODS: 'GET,HEAD,POST,PATCH,DELETE',
   CORS_OPTIONS: {
-    origin: [
-      // 'http://localhost:3000',
-      'http://chyVacheck.mesto.students.nomoredomains.club',
-      'https://chyVacheck.mesto.students.nomoredomains.club',
-      'http://chyvacheck.mesto.students.nomoredomains.club',
-      'https://chyvacheck.mesto.students.nomoredomains.club',
-    ],
+    origin: ['http://localhost:3000'],
     optionsSuccessStatus: 200,
     credentials: true,
   },

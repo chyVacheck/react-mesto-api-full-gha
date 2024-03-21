@@ -21,7 +21,7 @@ const { Logger } = require('./middlewares/Logger');
 const { DEFAULT_VALUES } = require('./utils/constants');
 
 // ? объявление порт`а
-const { PORT = 3000 } = process.env;
+const { PORT = 3001, ADDRESS_DB = 'mongodb://localhost:27017/mesto' } = process.env;
 
 const app = express();
 
@@ -41,7 +41,7 @@ app.use(limiter.simpleRequest);
 
 app.get('/crash-test', () => {
   setTimeout(() => {
-    throw new Error('Сервер сейчас упадёт');
+    throw new Error('Server going crash');
   }, 0);
 });
 
@@ -59,10 +59,10 @@ app.use(handleErrors);
 
 try {
   // ? подключаемся к серверу mongo
-  mongoose.connect('mongodb://localhost:27017/mestodb', () => {
-    console.log('Сonnected to MongoDB');
+  mongoose.connect(ADDRESS_DB, () => {
+    console.log('Connected to MongoDB');
     app.listen(PORT, () => {
-      console.log(`Сonnected to port: [${PORT}]`);
+      console.log(`Connected to port: [${PORT}]`);
     });
   });
 } catch (error) {

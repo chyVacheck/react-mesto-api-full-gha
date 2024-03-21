@@ -1,58 +1,56 @@
-
 import useForm from "../../hooks/useForm";
 
 function SingForm({ onSubmit, formTitle, id, submitTitle }) {
-
   const { values, handleChange, setValues } = useForm({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   function submit(evt) {
     evt.preventDefault();
     onSubmit(values.email, values.password);
     setValues({
-      email: '',
-      password: ''
-    })
+      email: "",
+      password: "",
+    });
   }
 
   return (
     <form
-      className='sign__form'
+      className="sign__form"
       onSubmit={submit}
-      name='sing-form'
+      name="sing-form"
       id={`sing-form-${id}`}
     >
       <h3 className="sign__title">{formTitle}</h3>
       {/*todo noValidate */}
       {/* all inputs */}
       {/* email */}
-      <div className='sign__field'>
+      <div className="sign__field">
         <input
-          className='sign__input'
-          value={values.email || ''}
+          className="sign__input"
+          value={values.email || ""}
           onChange={handleChange}
-          name='email'
-          type='email'
+          name="email"
+          type="email"
           minLength={2}
           maxLength={40}
           required={true}
-          placeholder='Email'
+          placeholder="Email"
         />
       </div>
       {/* password */}
-      <div className='sign__field'>
+      <div className="sign__field">
         <input
-          className='sign__input'
-          value={values.password || ''}
+          className="sign__input"
+          value={values.password || ""}
           onChange={handleChange}
-          name='password'
-          type='password'
+          name="password"
+          type="password"
           minLength={2}
           maxLength={40}
           required={true}
-          placeholder='Пароль'
+          placeholder="Password"
         />
       </div>
       {/* submit */}
@@ -65,7 +63,7 @@ function SingForm({ onSubmit, formTitle, id, submitTitle }) {
         {submitTitle}
       </button>
     </form>
-  )
+  );
 }
 
 export default SingForm;
